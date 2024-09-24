@@ -273,6 +273,14 @@ html {
 		cursor: pointer;
 	}
 
+	.error-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex: 1;
+		text-align: center;
+	}
+
 	@media (min-width: 920px) {
 		.hero {
 			height: 400px;

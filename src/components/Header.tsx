@@ -1,9 +1,27 @@
-import { NavLink, useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { NavLink } from 'react-router-dom'
+import { StoreProps, userSlice } from '../store/store'
+import { useEffect } from 'react'
+import { getUserProfile } from '../services/userProfile'
 
 export const Header = () => {
-	const currentPage = useLocation()
+	const user = useSelector((state: StoreProps) => state.user)
+	const dispatch = useDispatch()
 
-	if (currentPage.pathname === '/user') {
+	useEffect(() => {
+		if (localStorage.getItem('token') || sessionStorage.getItem('token')) {
+			const token =
+				localStorage.getItem('token') || sessionStorage.getItem('token')
+			dispatch(userSlice.actions.setToken(token))
+			getUserProfile(token as string).then((data: StoreProps | void) => {
+				if (data) {
+					dispatch(userSlice.actions.setUser(data))
+				}
+			})
+		}
+	}, [dispatch])
+
+	if (user.token) {
 		return (
 			<header>
 				<nav className='main-nav'>
@@ -18,9 +36,15 @@ export const Header = () => {
 					<div className='main-nav-items'>
 						<NavLink className='main-nav-item' to='/user'>
 							<i className='fa fa-user-circle'></i>
-							Tony
+							{user.firstName}
 						</NavLink>
-						<NavLink className='main-nav-item' to='/'>
+						<NavLink
+							className='main-nav-item'
+							to='/'
+							onClick={() => {
+								dispatch(userSlice.actions.clearUser())
+							}}
+						>
 							<i className='fa fa-sign-out'></i>
 							Sign Out
 						</NavLink>
@@ -42,9 +66,9 @@ export const Header = () => {
 					<h1 className='sr-only'>Argent Bank</h1>
 				</NavLink>
 				<div className='main-nav-items'>
-					<NavLink to='/sign-in' className='main-nav-item'>
+					<NavLink to='/login' className='main-nav-item'>
 						<i className='fa fa-user-circle'></i>
-						Sign In
+						Log In
 					</NavLink>
 				</div>
 			</nav>

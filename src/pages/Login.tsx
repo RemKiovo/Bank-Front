@@ -1,17 +1,17 @@
 import { useEffect } from 'react'
-import { SignInForm } from '../components/SignInForm'
+import { LoginForm } from '../components/LoginForm'
 
-export const SignIn = () => {
+export const Login = () => {
 	useEffect(() => {
-		document.title = 'Argent Bank - Sign In'
+		document.title = 'Argent Bank - Log In'
 	}, [])
 
 	return (
 		<main className='main bg-dark'>
 			<section className='sign-in-content'>
 				<i className='fa fa-user-circle sign-in-icon'></i>
-				<h1>Sign In</h1>
-				<SignInForm />
+				<h1>Log In</h1>
+				<LoginForm />
 			</section>
 		</main>
 	)
