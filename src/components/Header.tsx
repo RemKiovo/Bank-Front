@@ -1,25 +1,8 @@
-import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import { StoreProps, userSlice } from '../store/store'
-import { useEffect } from 'react'
-import { getUserProfile } from '../services/userProfile'
+import { useUser } from '../hooks/useUser'
 
 export const Header = () => {
-	const user = useSelector((state: StoreProps) => state.user)
-	const dispatch = useDispatch()
-
-	useEffect(() => {
-		if (localStorage.getItem('token') || sessionStorage.getItem('token')) {
-			const token =
-				localStorage.getItem('token') || sessionStorage.getItem('token')
-			dispatch(userSlice.actions.setToken(token))
-			getUserProfile(token as string).then((data: StoreProps | void) => {
-				if (data) {
-					dispatch(userSlice.actions.setUser(data))
-				}
-			})
-		}
-	}, [dispatch])
+	const { user, logout } = useUser()
 
 	if (user.token) {
 		return (
@@ -38,13 +21,7 @@ export const Header = () => {
 							<i className='fa fa-user-circle'></i>
 							{user.firstName}
 						</NavLink>
-						<NavLink
-							className='main-nav-item'
-							to='/'
-							onClick={() => {
-								dispatch(userSlice.actions.clearUser())
-							}}
-						>
+						<NavLink className='main-nav-item' to='/' onClick={logout}>
 							<i className='fa fa-sign-out'></i>
 							Sign Out
 						</NavLink>

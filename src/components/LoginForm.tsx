@@ -1,41 +1,31 @@
-import loginUser from '../services/userLogin'
-
 import { useNavigate } from 'react-router-dom'
-import { store } from '../store/store'
+import { useUser } from '../hooks/useUser'
 import { useEffect } from 'react'
 
 export const LoginForm = () => {
 	const navigate = useNavigate()
+	const { user, login } = useUser()
 
 	const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		console.log(e.currentTarget)
 		const username = e.currentTarget.username.value
 		const password = e.currentTarget.password.value
 		const rememberMe = e.currentTarget.rememberMe.checked
 
 		try {
-			await loginUser(username, password)
+			await login(username, password, rememberMe)
 			navigate('/user')
 		} catch (error) {
 			console.error('Erreur lors de la connexion : ', error)
 			alert('Mauvais identifiant ou mot de passe, veuillez réessayer')
 		}
-
-		if (rememberMe) {
-			localStorage.setItem('token', store.getState().user.token)
-		} else {
-			sessionStorage.setItem('token', store.getState().user.token)
-		}
 	}
 
-	const userToken =
-		localStorage.getItem('token') || sessionStorage.getItem('token')
 	useEffect(() => {
-		if (userToken) {
+		if (user.token) {
 			navigate('/user')
 		}
-	}, [userToken, navigate])
+	}, [user.token, navigate])
 
 	return (
 		<form onSubmit={handleLogin}>
