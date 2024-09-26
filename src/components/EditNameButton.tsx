@@ -2,24 +2,24 @@ import React, { useState } from 'react'
 import { useUser } from '../hooks/useUser'
 
 export const EditNameButton: React.FC = () => {
-	const { user, updateName } = useUser()
+	const { updateName } = useUser()
 	const [isEditing, setIsEditing] = useState(false)
-	const [newFirstName, setNewFirstName] = useState(user.firstName)
-	const [newLastName, setNewLastName] = useState(user.lastName)
 
-	const handleSave = async (e: React.FormEvent) => {
+	const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		if (!isNaN(Number(newFirstName)) || !isNaN(Number(newLastName))) {
+		const form = e.currentTarget as HTMLFormElement
+		const firstName = form.elements.namedItem('firstName') as HTMLInputElement
+		const lastName = form.elements.namedItem('lastName') as HTMLInputElement
+
+		if (!isNaN(Number(firstName.value)) || !isNaN(Number(lastName.value))) {
 			alert("Numbers aren't allowed")
 			return
 		}
-		await updateName(newFirstName, newLastName)
+		await updateName(firstName.value, lastName.value)
 		setIsEditing(false)
 	}
 
 	const handleCancel = () => {
-		setNewFirstName(user.firstName)
-		setNewLastName(user.lastName)
 		setIsEditing(false)
 	}
 
@@ -29,24 +29,24 @@ export const EditNameButton: React.FC = () => {
 				<div className='edit-name-inputs'>
 					<input
 						type='text'
-						value={newFirstName}
+						name='firstName'
 						placeholder='First Name'
-						onChange={(e) => setNewFirstName(e.target.value)}
 						required
+						autoComplete='off'
 					/>
 					<input
 						type='text'
-						value={newLastName}
+						name='lastName'
 						placeholder='Last Name'
-						onChange={(e) => setNewLastName(e.target.value)}
 						required
+						autoComplete='off'
 					/>
 				</div>
 				<div className='edit-name-buttons'>
 					<button type='submit' className='edit-button'>
 						Save
 					</button>
-					<button type='button' className='edit-button' onClick={handleCancel}>
+					<button type='reset' className='edit-button' onClick={handleCancel}>
 						Cancel
 					</button>
 				</div>

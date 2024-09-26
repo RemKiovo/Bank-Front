@@ -1,9 +1,6 @@
 import axios from 'axios'
 
-const loginUser = async (
-	username: string,
-	password: string
-): Promise<string> => {
+export const userLogin = async (username: string, password: string) => {
 	try {
 		const response = await axios.post(
 			`${import.meta.env.VITE_API_URL}/user/login`,
@@ -14,9 +11,12 @@ const loginUser = async (
 		)
 		return response.data.body.token
 	} catch (error) {
-		console.error('Login failed:', error)
-		throw new Error('Login failed. Please check your credentials.')
+		if (axios.isAxiosError(error)) {
+			if (!error.response) {
+				throw new Error('Server is offline')
+			}
+			throw new Error(error.response?.data?.message || 'Login failed')
+		}
+		throw error
 	}
 }
-
-export default loginUser

@@ -1,10 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 import { useUser } from '../hooks/useUser'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export const LoginForm = () => {
 	const navigate = useNavigate()
 	const { user, login } = useUser()
+	const [error, setError] = useState<string | null>(null)
 
 	const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -16,8 +17,14 @@ export const LoginForm = () => {
 			await login(username, password, rememberMe)
 			navigate('/user')
 		} catch (error) {
-			console.error('Erreur lors de la connexion : ', error)
-			alert('Mauvais identifiant ou mot de passe, veuillez réessayer')
+			console.error(error)
+			if (error instanceof Error) {
+				if (error.message === 'Server is offline') {
+					setError('Le serveur est hors ligne. Veuillez réessayer plus tard.')
+				} else {
+					setError('Mauvais identifiant ou mot de passe, veuillez réessayer')
+				}
+			}
 		}
 	}
 
@@ -42,6 +49,7 @@ export const LoginForm = () => {
 				<label htmlFor='rememberMe'>Remember me</label>
 			</div>
 			<button className='sign-in-button'>Log In</button>
+			{error && <div className='error-message'>{error}</div>}
 		</form>
 	)
 }

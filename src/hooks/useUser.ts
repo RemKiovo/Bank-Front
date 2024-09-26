@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { userSlice, StoreProps } from '../store/store'
 import { getUserProfile } from '../services/userProfile'
-import loginUser from '../services/userLogin'
 import changeName from '../services/userChangeName'
 import { useCallback, useEffect } from 'react'
+import { userLogin } from '../services/userLogin'
 
 export const useUser = () => {
 	const dispatch = useDispatch()
@@ -14,7 +14,7 @@ export const useUser = () => {
 		password: string,
 		rememberMe: boolean
 	) => {
-		const token = await loginUser(username, password)
+		const token = await userLogin(username, password)
 		if (token) {
 			dispatch(userSlice.actions.setToken(token))
 			if (rememberMe) {
@@ -35,7 +35,7 @@ export const useUser = () => {
 		async (token: string) => {
 			try {
 				const data = await getUserProfile(token)
-				if (data) {
+				if (data && !user.token) {
 					dispatch(userSlice.actions.setUser(data))
 				}
 			} catch (error) {
@@ -43,7 +43,7 @@ export const useUser = () => {
 				logout()
 			}
 		},
-		[dispatch, logout]
+		[dispatch, logout, user.token]
 	)
 
 	const updateName = async (firstName: string, lastName: string) => {
