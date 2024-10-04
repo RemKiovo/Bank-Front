@@ -1,4 +1,4 @@
-import { EditNameButton } from '../components/EditNameButton'
+import { NameEditor } from '../components/NameEditor'
 import { AccountSection } from '../components/AccountSection'
 import { ACCOUNTS } from '../constants'
 import { useNavigate } from 'react-router-dom'
@@ -18,13 +18,8 @@ export const User = () => {
 	return (
 		<main className='main bg-dark'>
 			<div className='header'>
-				<h1>
-					Welcome back
-					<br />
-					{user.firstName} {user.lastName}
-				</h1>
-				{/* TODO: Push firstName and lastName to the component */}
-				<EditNameButton />
+				<h1 className='header-title'>Welcome back</h1>
+				<NameEditor />
 			</div>
 			<h2 className='sr-only'>Accounts</h2>
 			{ACCOUNTS.map((account) => (

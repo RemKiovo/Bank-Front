@@ -3,15 +3,20 @@ import { useUser } from '../hooks/useUser'
 import { useEffect, useState } from 'react'
 
 export const LoginForm = () => {
-	const navigate = useNavigate()
 	const { user, login } = useUser()
+	const navigate = useNavigate()
+
+	const [username, setUsername] = useState(
+		user.email || sessionStorage.getItem('email') || ''
+	)
+	const [password, setPassword] = useState<string>('')
+	const [rememberMe, setRememberMe] = useState<boolean>(
+		sessionStorage.getItem('rememberMe') === 'true'
+	)
 	const [error, setError] = useState<string | null>(null)
 
 	const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		const username = e.currentTarget.username.value
-		const password = e.currentTarget.password.value
-		const rememberMe = e.currentTarget.rememberMe.checked
 
 		try {
 			await login(username, password, rememberMe)
@@ -38,14 +43,29 @@ export const LoginForm = () => {
 		<form onSubmit={handleLogin}>
 			<div className='input-wrapper'>
 				<label htmlFor='username'>Username</label>
-				<input type='text' id='username' />
+				<input
+					type='text'
+					id='username'
+					value={username}
+					onChange={(e) => setUsername(e.target.value)}
+				/>
 			</div>
 			<div className='input-wrapper'>
 				<label htmlFor='password'>Password</label>
-				<input type='password' id='password' />
+				<input
+					type='password'
+					id='password'
+					value={password}
+					onChange={(e) => setPassword(e.target.value)}
+				/>
 			</div>
 			<div className='input-remember'>
-				<input type='checkbox' id='rememberMe' />
+				<input
+					type='checkbox'
+					id='rememberMe'
+					checked={rememberMe}
+					onChange={(e) => setRememberMe(e.target.checked)}
+				/>
 				<label htmlFor='rememberMe'>Remember me</label>
 			</div>
 			<button className='sign-in-button'>Log In</button>

@@ -17,10 +17,13 @@ export const useUser = () => {
 		const token = await userLogin(username, password)
 		if (token) {
 			dispatch(userSlice.actions.setToken(token))
+			sessionStorage.setItem('token', token)
 			if (rememberMe) {
-				localStorage.setItem('token', token)
+				sessionStorage.setItem('email', username)
+				sessionStorage.setItem('rememberMe', 'true')
 			} else {
-				sessionStorage.setItem('token', token)
+				sessionStorage.removeItem('email')
+				sessionStorage.removeItem('rememberMe')
 			}
 			await fetchUserProfile(token)
 		}
@@ -28,7 +31,11 @@ export const useUser = () => {
 
 	const logout = useCallback(() => {
 		dispatch(userSlice.actions.clearUser())
-		localStorage.removeItem('token')
+		sessionStorage.removeItem('token')
+		if (sessionStorage.getItem('rememberMe') !== 'true') {
+			sessionStorage.removeItem('email')
+			sessionStorage.removeItem('rememberMe')
+		}
 	}, [dispatch])
 
 	const fetchUserProfile = useCallback(
@@ -55,12 +62,15 @@ export const useUser = () => {
 
 	const initializeUser = useCallback(() => {
 		if (!user.token) {
-			const token =
-				localStorage.getItem('token') || sessionStorage.getItem('token')
+			const token = sessionStorage.getItem('token')
 			if (token) {
 				dispatch(userSlice.actions.setToken(token))
 				fetchUserProfile(token)
 			}
+		}
+		const savedEmail = sessionStorage.getItem('email')
+		if (savedEmail) {
+			dispatch(userSlice.actions.setEmail(savedEmail))
 		}
 	}, [user.token, dispatch, fetchUserProfile])
 
