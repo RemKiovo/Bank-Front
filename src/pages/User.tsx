@@ -23,6 +23,7 @@ export const User = () => {
 					<br />
 					{user.firstName} {user.lastName}
 				</h1>
+				{/* TODO: Push firstName and lastName to the component */}
 				<EditNameButton />
 			</div>
 			<h2 className='sr-only'>Accounts</h2>

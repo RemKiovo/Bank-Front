@@ -3,19 +3,20 @@ import { useUser } from '../hooks/useUser'
 
 export const EditNameButton: React.FC = () => {
 	const { updateName } = useUser()
+	const [firstName, setFirstName] = useState('')
+	const [lastName, setLastName] = useState('')
 	const [isEditing, setIsEditing] = useState(false)
 
 	const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		const form = e.currentTarget as HTMLFormElement
-		const firstName = form.elements.namedItem('firstName') as HTMLInputElement
-		const lastName = form.elements.namedItem('lastName') as HTMLInputElement
+		setFirstName(firstName)
+		setLastName(lastName)
 
-		if (!isNaN(Number(firstName.value)) || !isNaN(Number(lastName.value))) {
+		if (!isNaN(Number(firstName)) || !isNaN(Number(lastName))) {
 			alert("Numbers aren't allowed")
 			return
 		}
-		await updateName(firstName.value, lastName.value)
+		await updateName(firstName, lastName)
 		setIsEditing(false)
 	}
 

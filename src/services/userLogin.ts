@@ -11,6 +11,7 @@ export const userLogin = async (username: string, password: string) => {
 		)
 		return response.data.body.token
 	} catch (error) {
+		console.log(error)
 		if (axios.isAxiosError(error)) {
 			if (!error.response) {
 				throw new Error('Server is offline')
