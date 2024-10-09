@@ -17,7 +17,6 @@ export const useUser = () => {
 		const token = await userLogin(username, password)
 		if (token) {
 			dispatch(userSlice.actions.setToken(token))
-			sessionStorage.setItem('token', token)
 			if (rememberMe) {
 				sessionStorage.setItem('email', username)
 				sessionStorage.setItem('rememberMe', 'true')
@@ -31,7 +30,6 @@ export const useUser = () => {
 
 	const logout = useCallback(() => {
 		dispatch(userSlice.actions.clearUser())
-		sessionStorage.removeItem('token')
 		if (sessionStorage.getItem('rememberMe') !== 'true') {
 			sessionStorage.removeItem('email')
 			sessionStorage.removeItem('rememberMe')

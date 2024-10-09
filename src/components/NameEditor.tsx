@@ -65,8 +65,8 @@ export const NameEditor = (): React.ReactNode => {
 							value={lastName}
 							onChange={(e) => setLastName(e.target.value)}
 						/>
-						{error && <p className='error-message'>{error}</p>}
 					</div>
+					{error && <p className='error-message'>{error}</p>}
 					<div className='edit-name-buttons'>
 						<button type='submit' className='edit-button'>
 							Save
