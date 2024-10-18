@@ -1,50 +1,72 @@
-# React + TypeScript + Vite
+# Argent Bank - Application Bancaire React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Aperçu du Projet
 
-Currently, two official plugins are available:
+Argent Bank est une application web basée sur React pour un système bancaire. Ce projet a été développé dans le cadre d'un défi pour "Utiliser une API pour le compte bancaire d'un utilisateur avec React". Les objectifs principaux étaient de mettre en œuvre une application front-end utilisant React et Redux, de faire des appels API et de modéliser les interactions de données.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Fonctionnalités
 
-## Expanding the ESLint configuration
+- Authentification des utilisateurs
+- Gestion du profil utilisateur
+- Vue d'ensemble des comptes
+- Design réactif
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Technologies Utilisées
 
-- Configure the top-level `parserOptions` property like this:
+- React 18.3.1
+- Redux (avec @reduxjs/toolkit) 2.2.7
+- React Router 6.26.2
+- TypeScript 5.5.3
+- Axios 1.7.7
+- Vite 5.4.1
+- SASS 1.79.1
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Installation
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+1. Clonez le dépôt :
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+   ```
+   git clone https://github.com/RemKiovo/Bank-Front.git
+   ```
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+2. Accédez au répertoire du projet :
+
+   ```
+   cd Bank-Front
+   ```
+
+3. Installez les dépendances :
+
+   ```
+   npm install
+   ```
+
+4. Démarrez le serveur de développement :
+   ```
+   npm run dev
+   ```
+
+## Utilisation
+
+Après avoir démarré le serveur de développement, ouvrez votre navigateur et accédez à `http://localhost:5173` (ou le port spécifié par Vite).
+
+- Connectez-vous en utilisant les identifiants de test fournis ou créez un nouveau compte.
+- Consultez et gérez vos comptes bancaires.
+- Modifiez les informations de votre profil utilisateur.
+
+## Structure du Projet
+
+- `src/components/`: Composants React
+- `src/pages/`: Composants de page
+- `src/store/`: Configuration et tranches du store Redux
+- `src/services/`: Fonctions de service API
+- `src/hooks/`: Hooks personnalisés
+- `src/store/`: Configuration et tranches du store Redux
+
+## Intégration API
+
+Ce projet interagit avec une API backend pour l'authentification des utilisateurs, la gestion des profils et les informations de compte. Les points de terminaison de l'API sont gérés à l'aide d'Axios dans le répertoire `src/services/`.
+
+## Améliorations Futures
+
+- Implémenter la visualisation de l'historique des transactions
